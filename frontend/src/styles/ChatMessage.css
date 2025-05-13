@@ -1,0 +1,61 @@
+.chat-message {
+    padding: 1rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    margin: 0.5rem auto;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .chat-message.user {
+    background-color: #2563eb; /* blue-600 */
+    color: white;
+    text-align: right;
+  }
+  
+  .chat-message.bot {
+    background-color: #1e1e2e; /* zinc-800 */
+    color: #e4e4e7;
+    text-align: left;
+  }
+  
+  .chat-message .user-input {
+    background: #0f172a; /* zinc-900 */
+    padding: 0.75rem;
+    border-left: 4px solid #60a5fa;
+    border-radius: 0.5rem;
+    font-family: monospace;
+  }
+  
+  .chat-message .ai-suggestion {
+    background: #0f172a;
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    border: 1px solid #334155;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .ai-paragraph {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .copy-button {
+    background: transparent;
+    border: 1px solid #888;
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .copy-button:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  
