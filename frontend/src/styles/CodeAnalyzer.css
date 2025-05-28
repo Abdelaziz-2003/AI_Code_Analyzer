@@ -45,3 +45,11 @@
     background-color: #1d4ed8;
   }
   
+
+  .footer-company {
+  margin-top: 20px;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #999;
+}

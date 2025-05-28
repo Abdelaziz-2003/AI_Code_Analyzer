@@ -78,7 +78,6 @@ export default function ChatMessage({ sender, text, result, error }) {
             {renderFormattedSuggestion(result.gpt_suggestion)}
             <div className="msg-info">
               <p><strong>Langage détecté :</strong> {result.language_detected}</p>
-              <p><strong>Vulnérabilités détectées :</strong> {result.semgrep_findings?.length || 0}</p>
             </div>
           </div>
         )}

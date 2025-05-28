@@ -88,4 +88,29 @@
   .delete-chat-btn:hover {
     color: red;
   }
+
   
+  .logout-container {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}

@@ -13,13 +13,21 @@ export default function CodeAnalyzer({ chatId }) {
 
   useEffect(() => {
     const fetchHistory = async () => {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+
       try {
-        const res = await axios.get(`http://127.0.0.1:8000/api/chat/${chatId}/history/`);
+        const res = await axios.get(`http://127.0.0.1:8000/api/chat/${chatId}/history/`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setHistory(res.data);
       } catch (error) {
         console.error("Erreur de chargement de l'historique :", error);
       }
     };
+
     if (chatId) fetchHistory();
   }, [chatId]);
 
@@ -54,6 +62,7 @@ export default function CodeAnalyzer({ chatId }) {
           <ChatMessage key={index} sender={msg.sender} {...msg} />
         ))}
       </div>
+
       <div className="input-section">
         <label className="input-label">Entrée de code :</label>
         <textarea
@@ -75,6 +84,11 @@ export default function CodeAnalyzer({ chatId }) {
           </button>
         </div>
       </div>
+
+      {/* Pied de page DXC Technology */}
+      <footer className="footer-company">
+        <p>© 2025 DXC Technology</p>
+      </footer>
     </div>
   );
 }
