@@ -45,3 +45,5 @@ class EmailVerificationCode(models.Model):
 
     def is_valid(self):
         return timezone.now() < self.created_at + timedelta(minutes=1)
+
+

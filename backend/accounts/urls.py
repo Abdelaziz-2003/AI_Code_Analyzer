@@ -1,15 +1,21 @@
-from django.urls import path, include
-from .views import signup_request_code, validate_code_and_create_user, login_user, current_user_view, update_profile, oauth2_redirect_view
+from django.urls import path
+from .views import (
+    signup_request_code,
+    validate_code_and_create_user,
+    login_user,
+    current_user_view,
+    update_profile,
+    password_reset_request_code,
+    password_reset_confirm,
+)
 
 urlpatterns = [
-    path('api/signup/code/', signup_request_code, name='signup-request-code'),
-    path('api/signup/verify/', validate_code_and_create_user, name='signup-verify'),
-    path('api/login/', login_user, name='login-user'),
-    path('api/user/me/', current_user_view, name='current-user'),
-
-    path('api/auth/', include('dj_rest_auth.urls')),
-    path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('api/user/update/', update_profile, name='update-profile'),
-    path('accounts/google/redirect/', oauth2_redirect_view),
+    path('api/signup/code/', signup_request_code),
+    path('api/signup/verify/', validate_code_and_create_user),
+    path('api/login/', login_user),
+    path('api/user/me/', current_user_view),
+    path('api/user/update/', update_profile),
+    path('api/password-reset/code/', password_reset_request_code),
+    path('api/password-reset/confirm/', password_reset_confirm),
 
 ]

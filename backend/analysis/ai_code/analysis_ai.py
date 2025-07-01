@@ -35,15 +35,64 @@ def gpt_vulnerability_analysis(code_input, lang):
 
     # Prompt principal renforcé
     prompt = (
-        f"Tu es un expert en sécurité et en correction de code. Analyse uniquement le code suivant en {lang}.\n"
-        f"Donne :\n"
-        f"1. Une liste des vulnérabilités SI elles existent (comme injection, XSS, path traversal, etc.)\n"
-        f"2. Une liste des erreurs de syntaxe ou d'exécution (comme variable non définie, appel de fonction incorrect, etc.)\n"
-        f"3. Des suggestions de correction **sans jamais ajouter de nouvelles fonctionnalités** qui ne sont pas dans le code.\n"
-        f"4. Le code corrigé à la fin, en conservant le comportement initial.\n\n"
-        f"⚠️ IMPORTANT : Si tu corriges un path traversal, tu dois vérifier le chemin absolu et utiliser `startswith` avec `os.path.abspath(dossier_autorise) + os.sep`. "
-        f"N’utilise jamais `if dossier_autorise in chemin_absolu`, car cela est incorrect et vulnérable.\n\n"
-    )
+    f"Tu es un expert international en cybersécurité et en audit de code sécurisé. "
+    f"Tu es un auditeur de cybersécurité très strict, tu dois détecter toute vulnérabilité, même minime. "
+    f"Ta mission est d’effectuer une **analyse professionnelle, rigoureuse et exhaustive** du code source suivant, écrit en langage {lang}.\n\n"
+
+    f"🎯 Objectif : Identifier et corriger **toutes les vulnérabilités de sécurité**, **toutes les erreurs de syntaxe ou d’exécution**, "
+    f"et générer une version du code **100 % sécurisée**, **100 % fonctionnelle**, **100 % propre** — sans jamais modifier son comportement ou sa logique.\n\n"
+
+    f"⚙️ Ta réponse doit obligatoirement être structurée en **exactement quatre sections TITRÉES** dans l’ordre suivant. Aucune déviation n’est autorisée :\n\n"
+
+    f"1. ✅ Liste des **vulnérabilités de sécurité détectées** :\n"
+    f"   - Identifie **toutes les vulnérabilités potentielles**, y compris :\n"
+    f"     - Injection de commande (`os.system`, `Runtime.exec`, `system()`, `subprocess`, etc.)\n"
+    f"     - Désérialisation non sécurisée (`pickle.load`, `ObjectInputStream`, `readObject`, etc.)\n"
+    f"     - Traversée de répertoire (`../`, chemins relatifs non filtrés, etc.)\n"
+    f"     - Exécution de code arbitraire (`eval`, `exec`, `Function`, réflexion Java, etc.)\n"
+    f"     - Entrées utilisateur non filtrées (`input()`, `Scanner`, `cin`, etc.)\n"
+    f"     - Secrets codés en dur, fonctions dangereuses, cryptographie faible, débordements mémoire, etc.\n"
+    f"   - Numérote chaque vulnérabilité (1., 2., 3., etc.)\n"
+    f"   - Aucune vulnérabilité ne doit être oubliée, même si elle est théorique, rare ou de faible impact.\n\n"
+
+    f"2. 🛠️ Liste des **erreurs de syntaxe ou d’exécution détectées** :\n"
+    f"   - Liste uniquement les erreurs **réelles et vérifiables** (bugs, crashs, exécutions incorrectes) :\n"
+    f"     - Imports manquants, appels API invalides, incohérences logiques, code inaccessible, etc.\n"
+    f"     - Oublis de `try/except` sur fichiers ou entrées utilisateurs\n"
+    f"   - Numérote chaque erreur (1., 2., 3., etc.)\n"
+    f"   - Ne jamais inventer ou supposer — signale uniquement ce qui est réellement présent.\n\n"
+
+    f"3. 💡 Corrections suggérées :\n"
+    f"   - Propose une **correction minimale et précise** pour chaque problème détecté\n"
+    f"   - Ne change jamais la logique métier ni les noms des fonctions sauf si c’est absolument nécessaire pour la sécurité\n"
+    f"   - Si un appel est fondamentalement dangereux et impossible à sécuriser, désactive-le avec : `raise Exception(\"[RAISON EXPLICITE]\")`\n"
+    f"   - Remplace `os.system`, `Runtime.exec`, etc. par `subprocess.run([...], shell=False)` si les entrées sont strictement validées\n"
+    f"   - Entoure toute opération fichier ou désérialisation avec un `try/except` strict\n"
+    f"   - Valide systématiquement toutes les entrées utilisateur avec des règles strictes (listes blanches)\n"
+    f"   - Pour protéger contre les attaques de traversée de répertoire, compare toujours les chemins absolus à un dossier de base autorisé\n\n"
+
+    f"4. 🔧 Code corrigé :\n"
+    f"   - Donne la version **définitive, corrigée et sécurisée du code**, dans un bloc Markdown : ```{lang} ... ```\n"
+    f"   - Applique uniquement les corrections listées ci-dessus — ni plus, ni moins\n"
+    f"   - N’ajoute aucun commentaire, explication, ou modification inutile\n\n"
+
+    f"⚠️ Recommandation pour la protection contre la traversée de répertoires (en Python) :\n"
+    f"```python\n"
+    f"chemin_absolu = os.path.abspath(file_path)\n"
+    f"if not chemin_absolu.startswith(os.path.abspath(authorized_folder) + os.sep):\n"
+    f"    raise Exception(\"Path traversal detected\")\n"
+    f"```\n"
+    f"- ❌ À ne jamais faire : `if folder in path`, filtrage naïf, comparaison partielle\n"
+    f"- ✅ À toujours faire : comparaison stricte de chemins absolus avec dossier autorisé\n\n"
+
+    f"📌 Tu dois TOUJOURS renvoyer les **quatre sections** obligatoires dans l’ordre exact.\n"
+    f"⛔️ Interdictions strictes :\n"
+    f"   - Ne jamais renommer, fusionner, ignorer, séparer ou réordonner les sections\n"
+    f"   - Ne jamais ajouter de résumé ou cinquième section\n"
+    f"   - Ne jamais modifier la logique du code hors sécurité stricte\n"
+)
+
+
 
     # Si des instructions personnalisées sont données, les inclure
     if instructions:
@@ -54,7 +103,7 @@ def gpt_vulnerability_analysis(code_input, lang):
 
     try:
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {
                     "role": "system",
