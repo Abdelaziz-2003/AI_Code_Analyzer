@@ -40,3 +40,19 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Centrer le texte de l'utilisateur */
+.user-greeting {
+  text-align: center;
+  width: 100%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* S'assurer que la zone de droite prend toute la largeur possible et centre le contenu */
+.header-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
